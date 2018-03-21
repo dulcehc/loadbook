@@ -1,16 +1,45 @@
 const appbaseRef = new Appbase({
 	url: "https://scalr.api.appbase.io",
-	app: "testing-books",
-	credentials: "tbcZmO8zJ:b894fa35-968a-43a9-a211-331954625da5"
+	app: "openbook",
+	credentials: "Tlt67c9PM:4ca76c0c-b1bb-4fd4-a675-68bead959b44"
 })
 
 const typeIndex = "books"
+const person = {
+    name: "Dulce Hernandez",
+    user: "dulcehc",
+    email: "dulce.hernandezc@gmail.com",
+    city: "Iztapalapa"
+}
+
+function generateID(){
+    return Math.floor(Math.random()*100000)
+}
+
+function getDate(){
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0!
+    let yyyy = today.getFullYear();
+
+    if(dd<10){
+        dd='0'+dd;
+    } 
+    if(mm<10){
+        mm='0'+mm;
+    }
+
+    today = yyyy +'/'+mm+'/'+dd;
+    console.log(today)
+    return today;
+}
 
 function upload(){
     let title = document.getElementById('inputTitle').value
     let autor = document.getElementById('inputAuthor').value
     let portada = document.getElementById('file1')
     let contraPortada = document.getElementById('file2')
+    let date = getDate()
 
     let promesaPortada = new Promise((resolve, reject) => {
         let file = portada.files[0];
@@ -34,13 +63,15 @@ function upload(){
     .then((values) => {
         console.log('Los valores son ', values)
         let jsonObject = {
-            "user": "Dulce",
-            "books": {
-                "title": title,
-                "autor": autor,
-                "portada": values[0],
-                "contraportada": values[1]
-            }
+            "owner": person.name,
+            "user": person.user,
+            "email": person.email,
+            "location": person.city,
+            "published": date,
+            "title": title,
+            "author": autor,
+            "front": values[0],
+            "back": values[1]       
         }
         add(jsonObject)
     })
@@ -54,7 +85,7 @@ function upload(){
 function add(jsonObject){
     appbaseRef.index({
         type: typeIndex,
-        id: "DUHC",
+        id: generateID(),
         body: jsonObject
     }).on('data', function(response) {
         console.log(`data: ${JSON.stringify(response)})`);
@@ -66,11 +97,11 @@ function add(jsonObject){
 function search(){
     appbaseRef.get({
         type: typeIndex,
-        id: "DUHC"
+        id: '37328'
     }).on('data', function(response) {
-        //console.log(`data: ${JSON.stringify(response)}`)
+        console.log(`data: ${JSON.stringify(response)}`)
         console.log(Object.keys(response))
-        document.getElementById("portada").src=response._source.books.portada
+        document.getElementById('portada').src=response._source.books.portada
 
     }).on('error', function(error) {
         console.log(`error: ${error}`)
