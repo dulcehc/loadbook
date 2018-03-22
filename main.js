@@ -97,11 +97,11 @@ function add(jsonObject){
 function search(){
     appbaseRef.get({
         type: typeIndex,
-        id: '37328'
+        id: '36958'
     }).on('data', function(response) {
         console.log(`data: ${JSON.stringify(response)}`)
         console.log(Object.keys(response))
-        document.getElementById('portada').src=response._source.books.portada
+        document.getElementById('portada').src=response._source.front
 
     }).on('error', function(error) {
         console.log(`error: ${error}`)
