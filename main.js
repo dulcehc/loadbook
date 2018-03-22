@@ -5,11 +5,17 @@ const appbaseRef = new Appbase({
 })
 
 const typeIndex = "books"
-const person = {
+/*const person = {
     name: "Dulce Hernandez",
     user: "dulcehc",
     email: "dulce.hernandezc@gmail.com",
     city: "Iztapalapa"
+}*/
+const person = {
+    name: "Leonardo Mendez",
+    user: "leomdz",
+    email: "lci.leornardom@gmail.com",
+    city: "Tlalpan"
 }
 
 function generateID(){
@@ -30,7 +36,6 @@ function getDate(){
     }
 
     today = yyyy +'/'+mm+'/'+dd;
-    console.log(today)
     return today;
 }
 
@@ -99,7 +104,6 @@ function search(){
         type: typeIndex,
         id: '36958'
     }).on('data', function(response) {
-        console.log(`data: ${JSON.stringify(response)}`)
         console.log(Object.keys(response))
         document.getElementById('portada').src=response._source.front
 
